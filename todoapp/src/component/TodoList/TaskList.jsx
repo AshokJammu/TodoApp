@@ -126,28 +126,28 @@ class TaskList extends Component {
   };
 
   // update the task status to true
-  // updateTask = (index) => {
-  //   // get the task list from the local storage
-  //   let  todoList = JSON.parse(localStorage.getItem(" todoList"));
-  //   // change status to true
-  //    todoList[index].status = true;
-  //   // save the updated task list
-  //   localStorage.setItem(" todoList", JSON.stringify( todoList));
-  //   // refresh the task list
-  //   this.getTasks();
-  // };
+  updateTask = (index) => {
+    // get the task list from the local storage
+    let  todoList = JSON.parse(localStorage.getItem(" todoList"));
+    // change status to true
+     todoList[index].status = true;
+    // save the updated task list
+    localStorage.setItem(" todoList", JSON.stringify( todoList));
+    // refresh the task list
+    this.getTasks();
+  };
 
   // undone the task status from true to false
-  // undoTask = (index) => {
-  //   // get the task list from the local storage
-  //   let  todoList = JSON.parse(localStorage.getItem(" todoList"));
-  //   // change status to false
-  //    todoList[index].status = false;
-  //   // save the updated task list
-  //   localStorage.setItem(" todoList", JSON.stringify( todoList));
-  //   // refresh the task list
-  //   this.getTasks();
-  // };
+  undoTask = (index) => {
+    // get the task list from the local storage
+    let  todoList = JSON.parse(localStorage.getItem(" todoList"));
+    // change status to false
+     todoList[index].status = false;
+    // save the updated task list
+    localStorage.setItem(" todoList", JSON.stringify( todoList));
+    // refresh the task list
+    this.getTasks();
+  };
 
   // delete the task from the task list
   deleteTask = (index) => {
