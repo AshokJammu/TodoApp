@@ -8,6 +8,8 @@ class TaskList extends Component {
 
     this.state = {
       task: "",
+      todoList:"",
+      hashList:""
     };
   }
   componentDidMount = () => {
@@ -213,7 +215,6 @@ class TaskList extends Component {
     let hashIndex = todoList[index].task.split("#")
     // console.log(hashIndex)
     let hashArr = []
-    // let x = todoList.includes()
     todoList.map(item =>{
     var input = item.task.split("#")
     if(hashIndex[1] === input[1]){
@@ -222,6 +223,7 @@ class TaskList extends Component {
     })
     console.log(hashArr,"arr")
     localStorage.setItem("hashList", JSON.stringify(hashArr))
+    this.setState({ task: "" });
     this.hashTasksList()
   //  console.log(input[1],"input")
   };
@@ -262,6 +264,21 @@ class TaskList extends Component {
     this.getTasks();
   };
 
+  // ClearAll
+  clearTask = ()=>{
+    console.log("Clear All")
+    let todoList = JSON.parse(localStorage.getItem(" todoList"));
+    todoList.map(item =>{
+      if(item){
+        todoList.pop()
+      }
+    })
+    localStorage.setItem(" todoList", JSON.stringify(todoList))
+    // todoList = ""
+    this.getTasks()
+
+  }
+
   render() {
     return (
       <div>
@@ -280,12 +297,14 @@ class TaskList extends Component {
               fluid
               placeholder="Enter tasks..."
             />
-            <button>Clear All</button>
           </Form>
         </div>
+        <button onClick={() => this.clearTask()}>Clear All</button>
         <div>
           <Card.Group>{this.state.todoList}</Card.Group>
-          {/* <Card.Group>{this.state.hashList}</Card.Group> */}
+          <Card.Group>{this.state.hashList}</Card.Group>
+        </div>
+        <div>
         </div>
       </div>
     );
