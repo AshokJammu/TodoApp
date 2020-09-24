@@ -9,7 +9,8 @@ class TaskList extends Component {
     this.state = {
       task: "",
       todoList:"",
-      hashList:""
+      hashList:"",
+      hashFlag:false
     };
   }
   componentDidMount = () => {
@@ -50,7 +51,10 @@ class TaskList extends Component {
       localStorage.setItem(" todoList", JSON.stringify(todoList));
 
       // clear the form
-      this.setState({ task: "" });
+      this.setState({ 
+        task: "" ,
+        hashFlag:false
+      });
 
       // refresh the tasks
       this.getTasks();
@@ -135,14 +139,14 @@ class TaskList extends Component {
   // Hashtask List
 
   hashTasksList = () => {
-    // get the task list from the local storage
+    // get the hash list from the local storage
     let hashList = JSON.parse(localStorage.getItem("hashList"));
     console.log(hashList)
 
-    // check if task list is empty
+    // check if hash list is empty
     if (hashList) {
-      // sort all the tasks on the basis of status
-      // completed task will move down
+      //sort all the tasks on the basis of status
+      //completed task will move down
       hashList = hashList.sort((a, b) => {
         if (a.status) {
           return 1;
@@ -152,7 +156,7 @@ class TaskList extends Component {
         return 0;
       });
 
-      // save the task list in the local storage
+      // save the hash list in the local storage
       localStorage.setItem("hashList", JSON.stringify(hashList));
 
       // set the  todoList to the state
@@ -223,7 +227,10 @@ class TaskList extends Component {
     })
     console.log(hashArr,"arr")
     localStorage.setItem("hashList", JSON.stringify(hashArr))
-    this.setState({ task: "" });
+    this.setState({ 
+      task: "",
+      hashFlag:true
+     });
     this.hashTasksList()
   //  console.log(input[1],"input")
   };
@@ -232,50 +239,75 @@ class TaskList extends Component {
   updateTask = (index) => {
     // get the task list from the local storage
     let todoList = JSON.parse(localStorage.getItem(" todoList"));
+    let hashList = JSON.parse(localStorage.getItem("hashList"));
+
     // change status to true
     todoList[index].status = true;
+    hashList[index].status = true
     // save the updated task list
     localStorage.setItem(" todoList", JSON.stringify(todoList));
+    localStorage.setItem("hashList", JSON.stringify(hashList))
+
     // refresh the task list
     this.getTasks();
+    this.hashTasksList()
   };
 
   // undone the task status from true to false
   undoTask = (index) => {
     // get the task list from the local storage
     let todoList = JSON.parse(localStorage.getItem(" todoList"));
+    let hashList = JSON.parse(localStorage.getItem("hashList"));
+
     // change status to false
     todoList[index].status = false;
+    hashList[index].status = false
     // save the updated task list
     localStorage.setItem(" todoList", JSON.stringify(todoList));
+    localStorage.setItem("hashList", JSON.stringify(hashList))
+
     // refresh the task list
     this.getTasks();
+    this.hashTasksList()
   };
 
   // delete the task from the task list
   deleteTask = (index) => {
     // get the task list from the local storage
     let todoList = JSON.parse(localStorage.getItem(" todoList"));
+    let hashList = JSON.parse(localStorage.getItem("hashList"));
     // remove the task from the task list
     todoList.splice(index, 1);
+    hashList.splice(index,1)
     // save the updated task list
     localStorage.setItem(" todoList", JSON.stringify(todoList));
+    localStorage.setItem("hashList", JSON.stringify(hashList))
+
     // refresh the task list
     this.getTasks();
+    this.hashTasksList()
   };
 
   // ClearAll
   clearTask = ()=>{
     console.log("Clear All")
     let todoList = JSON.parse(localStorage.getItem(" todoList"));
+    let hashList = JSON.parse(localStorage.getItem("hashList"));
     todoList.map(item =>{
       if(item){
         todoList.pop()
       }
     })
+    hashList.map(item =>{
+      if(item){
+        hashList.pop()
+      }
+    })
     localStorage.setItem(" todoList", JSON.stringify(todoList))
+    localStorage.setItem("hashList", JSON.stringify(hashList))
     // todoList = ""
     this.getTasks()
+    this.hashTasksList()
 
   }
 
@@ -301,8 +333,11 @@ class TaskList extends Component {
         </div>
         <button onClick={() => this.clearTask()}>Clear All</button>
         <div>
-          <Card.Group>{this.state.todoList}</Card.Group>
-          <Card.Group>{this.state.hashList}</Card.Group>
+          {
+            !this.state.hashFlag? <Card.Group>{this.state.todoList}</Card.Group> : <Card.Group>{this.state.hashList}</Card.Group>
+          }
+          
+          
         </div>
         <div>
         </div>
